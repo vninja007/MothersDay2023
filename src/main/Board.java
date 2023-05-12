@@ -8,25 +8,279 @@ import javax.swing.*;
 
 public class Board extends JFrame {
 
-
+	
     private JLabel turn;
     private JTextField movefield;
     private String turnS;
     
+    public int[][] getMoves(char piece, int dx, int dy){
+    	int[][] possible;
+    	switch(piece) {
+    	case 'N':
+    		possible = new int[][] {
+    		           {dx-1,dy-2},
+    		           {dx+1,dy-2},
+    		           {dx-2,dy-1},
+    		           {dx+2,dy-1},
+    		           {dx-2,dy+1},
+    		           {dx+2,dy+1},
+    		           {dx-1,dy+2},
+    		           {dx+1,dy+2}
+    		           
+    		};
+    		break;
+    	case 'R':
+    		possible = new int[][] {
+    			{dx-7,dy},
+    			{dx-6,dy},
+    			{dx-5,dy},
+    			{dx-4,dy},
+    			{dx-3,dy},
+    			{dx-2,dy},
+    			{dx-1,dy},
+    			{dx+1,dy},
+    			{dx+2,dy},
+    			{dx+3,dy},
+    			{dx+4,dy},
+    			{dx+5,dy},
+    			{dx+6,dy},
+    			{dx+7,dy},
+    			{dx,dy-7},
+    			{dx,dy-6},
+    			{dx,dy-5},
+    			{dx,dy-4},
+    			{dx,dy-3},
+    			{dx,dy-2},
+    			{dx,dy-1},
+    			{dx,dy+1},
+    			{dx,dy+2},
+    			{dx,dy+3},
+    			{dx,dy+4},
+    			{dx,dy+5},
+    			{dx,dy+6},
+    			{dx,dy+7}
+    			
+    		};
+    		break;
+    	case 'B':
+    		possible = new int[][] {
+    				{dx-7,dy-7},
+        			{dx-6,dy-6},
+        			{dx-5,dy-5},
+        			{dx-4,dy-4},
+        			{dx-3,dy-3},
+        			{dx-2,dy-2},
+        			{dx-1,dy-1},
+        			{dx+1,dy+1},
+        			{dx+2,dy+2},
+        			{dx+3,dy+3},
+        			{dx+4,dy+4},
+        			{dx+5,dy+5},
+        			{dx+6,dy+6},
+        			{dx+7,dy+7},
+        			{dx+7,dy-7},
+        			{dx+6,dy-6},
+        			{dx+5,dy-5},
+        			{dx+4,dy-4},
+        			{dx+3,dy-3},
+        			{dx+2,dy-2},
+        			{dx+1,dy-1},
+        			{dx-1,dy+1},
+        			{dx-2,dy+2},
+        			{dx-3,dy+3},
+        			{dx-4,dy+4},
+        			{dx-5,dy+5},
+        			{dx-6,dy+6},
+        			{dx-7,dy+7}
+    		};
+    		break;
+    	default:
+    		//King move
+    		possible = new int[][] {
+    			{dx-1,dy-1},
+    			{dx-1,dy},
+    			{dx-1,dy+1},
+    			{dx,dy-1},
+    			{dx,dy+1},
+    			{dx+1,dy-1},
+    			{dx+1,dy},
+    			{dx+1,dy+1}
+    			
+    		};
+    		break;
+    	case 'Q':
+    		possible = new int[][] {
+    			{dx-7,dy},
+    			{dx-6,dy},
+    			{dx-5,dy},
+    			{dx-4,dy},
+    			{dx-3,dy},
+    			{dx-2,dy},
+    			{dx-1,dy},
+    			{dx+1,dy},
+    			{dx+2,dy},
+    			{dx+3,dy},
+    			{dx+4,dy},
+    			{dx+5,dy},
+    			{dx+6,dy},
+    			{dx+7,dy},
+    			{dx,dy-7},
+    			{dx,dy-6},
+    			{dx,dy-5},
+    			{dx,dy-4},
+    			{dx,dy-3},
+    			{dx,dy-2},
+    			{dx,dy-1},
+    			{dx,dy+1},
+    			{dx,dy+2},
+    			{dx,dy+3},
+    			{dx,dy+4},
+    			{dx,dy+5},
+    			{dx,dy+6},
+    			{dx,dy+7},
+    			{dx-7,dy-7},
+    			{dx-6,dy-6},
+    			{dx-5,dy-5},
+    			{dx-4,dy-4},
+    			{dx-3,dy-3},
+    			{dx-2,dy-2},
+    			{dx-1,dy-1},
+    			{dx+1,dy+1},
+    			{dx+2,dy+2},
+    			{dx+3,dy+3},
+    			{dx+4,dy+4},
+    			{dx+5,dy+5},
+    			{dx+6,dy+6},
+    			{dx+7,dy+7},
+    			{dx+7,dy-7},
+    			{dx+6,dy-6},
+    			{dx+5,dy-5},
+    			{dx+4,dy-4},
+    			{dx+3,dy-3},
+    			{dx+2,dy-2},
+    			{dx+1,dy-1},
+    			{dx-1,dy+1},
+    			{dx-2,dy+2},
+    			{dx-3,dy+3},
+    			{dx-4,dy+4},
+    			{dx-5,dy+5},
+    			{dx-6,dy+6},
+    			{dx-7,dy+7}
+    		};
+    		
+    	}
+    	return possible;
+    }
     Action action = new AbstractAction()
     {
-        @Override
+        public void actionPerformed(String txt) {
+        	int dx = -1, dy = -1, givenx = -1, giveny = -1;
+        	char piece;
+        	char mvx = (char)-1;
+        	int mvy = -1;
+        	char file;
+        	
+        	int[][] possible;
+        	System.out.println(txt);
+            if(txt.length() == 2) {
+            	//pawnmove
+            	int dest = Integer.parseInt(txt.substring(1,2));
+            	file = txt.charAt(0);
+            	int src = dest + 1;
+            	if(turnS.equals("White")) {
+            		src = dest-1;
+            	}
+            	if(labels[(8-src) * 8 + (file-97)].getName().equals("Empty")) {
+            		if(turnS.equals("White")) {
+            			src = dest-2;
+            		}
+            		else {
+            			src = dest+2;
+            		}
+            	}
+            	if(!labels[(8-src) * 8 + (file-97)].getName().equals("Black Pawn")
+            			&& !labels[(8-src) * 8 + (file-97)].getName().equals("White Pawn")) {return;}
+            	swap(file, src, file, dest);
+            	return;
+            }
+            else if(txt.length() == 3) {
+            	dy = 8-Integer.parseInt(txt.substring(2,3));
+            	file = txt.charAt(1);
+            	piece = txt.charAt(0);
+            	dx = file-97;
+            	System.out.println(dy*8+dx);
+            	possible = getMoves(piece, dx, dy);
+            }
+            else if(txt.length() == 4 && txt.indexOf('x')!=-1) {
+            	txt = txt.substring(0,1)+ txt.substring(2);
+            	dy = 8-Integer.parseInt(txt.substring(2,3));
+            	file = txt.charAt(1);
+            	dx = file-97;
+            	if((int)txt.charAt(0) >= 97) {
+            		piece = 'P';
+            		if(turnS.equals("White")) {
+                    	possible = new int[][] {
+                    		{dx-1,dy+1},
+                    		{dx+1,dy+1}
+                    	};
+            		}
+            		else {
+            			possible = new int[][] {
+                    		{dx-1,dy-1},
+                    		{dx+1,dy-1}
+                    	};
+            		}
+            	}
+            	else {
+            		piece = txt.charAt(0);
+                	possible = getMoves(piece, dx, dy);
+            	}
+            	System.out.println(dy*8+dx);
+            }
+          
+            else {
+            	possible = new int[0][0];
+            	piece = ' ';
+            	file = ' ';
+            	swap(txt.charAt(1), Integer.parseInt(txt.substring(2,3)), txt.charAt(3), Integer.parseInt(txt.substring(4,5)));
+            }
+  
+        	for(int[] move: possible) {
+        		int x = move[0];
+        		int y = move[1];
+        		System.out.println("X"+x);
+        		System.out.println("Y"+y);
+        		if(!(x >= 0 && x < 8)) {continue;}
+        		if(!(y >= 0 && y < 8)) {continue;}
+        		
+        		System.out.println(8*y+x);
+        		System.out.println(labels[8*y+x].getShortName());
+        		System.out.println(piece);
+        		if(giveny!= -1) {
+        			
+        		}
+        		else if(givenx!= -1) {
+        			
+        		}
+        		else {
+	        		if(labels[8*y+x].getShortName()==piece && labels[8*y+x].getColor().equals(turnS)) {
+	        			mvx = (char)(x+97);
+	        			mvy = 8-y;
+	        			break;
+	        		}
+        		}
+        	}
+        	if(mvy == -1) {return;}
+        	swap(mvx,mvy, file, 8-dy);
+        	
+            
+        }
         public void actionPerformed(ActionEvent e)
         {
             String txt = movefield.getText();
-            System.out.println(txt);
-            if(txt.length() == 4) {
-            	txt = "P" + txt;
-            }
-            swap(txt.charAt(1), Integer.parseInt(txt.substring(2,3)), txt.charAt(3), Integer.parseInt(txt.substring(4,5)));
-            
-            
+            actionPerformed(txt);
             movefield.setText("");
+            
             
         }
     };
@@ -126,7 +380,7 @@ public class Board extends JFrame {
         GridLayout gridLayout = new GridLayout(9, 9);
       
         
-
+        
         chessBoard.setLayout(gridLayout);
         
         chessBoard.add(new JLabel(" "));

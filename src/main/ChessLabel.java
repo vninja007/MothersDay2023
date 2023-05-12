@@ -44,6 +44,46 @@ public class ChessLabel extends JLabel {
     	
     	return "Empty";
     }
+    public char getShortName() {
+    	if(s.equals("")) {return ' ';}
+    	if(s.equals("\u265C")) {return 'R';}
+    	if(s.equals("\u265E")) {return 'N';}
+    	if(s.equals("\u265D")) {return 'B';}
+    	if(s.equals("\u265B")) {return 'Q';}
+    	if(s.equals("\u265A")) {return 'K';}
+    	if(s.equals("\u265F")) {return 'P';}
+    				
+    	
+    	
+    	if(s.equals("\u2656")) {return 'R';}
+    	if(s.equals("\u2658")) {return 'N';}
+    	if(s.equals("\u2657")) {return 'B';}
+    	if(s.equals("\u2655")) {return 'Q';}
+    	if(s.equals("\u2654")) {return 'K';}
+    	if(s.equals("\u2659")) {return 'P';}
+    	
+    	
+    	return ' ';
+    }
+    public String getColor() {
+    	if(s.equals("")) {return "Empty";}
+    	if(s.equals("\u265C")) {return "Black";}
+    	if(s.equals("\u265E")) {return "Black";}
+    	if(s.equals("\u265D")) {return "Black";}
+    	if(s.equals("\u265B")) {return "Black";}
+    	if(s.equals("\u265A")) {return "Black";}
+    	if(s.equals("\u265F")) {return "Black";}
+    				
+    	
+    	
+    	if(s.equals("\u2656")) {return "White";}
+    	if(s.equals("\u2658")) {return "White";}
+    	if(s.equals("\u2657")) {return "White";}
+    	if(s.equals("\u2655")) {return "White";}
+    	if(s.equals("\u2654")) {return "White";}
+    	if(s.equals("\u2659")) {return "White";}
+    	return "Empty";
+    }
     public String toString() {return getName();}
 
 }
