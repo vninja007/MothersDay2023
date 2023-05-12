@@ -18,8 +18,16 @@ public class Board extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            System.out.println(movefield.getText());
+            String txt = movefield.getText();
+            System.out.println(txt);
+            if(txt.length() == 4) {
+            	txt = "P" + txt;
+            }
+            swap(txt.charAt(1), Integer.parseInt(txt.substring(2,3)), txt.charAt(3), Integer.parseInt(txt.substring(4,5)));
+            
+            
             movefield.setText("");
+            
         }
     };
 
@@ -58,26 +66,57 @@ public class Board extends JFrame {
     new ChessLabel("\u2658"), new ChessLabel("\u2656")
     };
 
+	
+	
     public Board() 
     {
     	turnS = "White";
     	turn = new JLabel();
     	turn.setText("TURN: "+turnS);
     	turn.setFont(new Font("Serif", Font.PLAIN, 14));
-    	turn.setSize(600, 100);
+    	turn.setSize(100, 100);
     	movefield = new JTextField();
     	movefield.addActionListener(action);
     } // Board()
 
+    
+    //true if capture, false if not.
+    private boolean swap(char srcx, int srcy, char destx, int desty) {
+    	int srcind = (8-srcy) * 8 + (srcx-97);
+    	int destind = (8-desty) * 8 + (destx-97);
+    	boolean ret = false;
+    	if(labels[destind].getName().equals("Empty") ==false)
+    		ret = true;
+    	labels[destind] = labels[srcind];
+    	labels[srcind] = new ChessLabel("");
+    	System.out.println(labels[srcind].getName());
+    	System.out.println(labels[destind].getName());
+    	System.out.println(ret);
+    	System.out.println(labels.length);
+
+        this.dispose();
+    	display();
+    	return ret;
+    }
+    
     public String getMove() {
     	return movefield.getText();
     }
+    
+    
+    //DO NOT TOUCH UNLESS NECESSARY.
     public void display()
     {
         setTitle("Chess board with unicode images");
 
         //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        this.revalidate();
         
+        this.getContentPane().removeAll(); // now you can use the frame variable
+        
+        this.repaint();
+        this.pack();
         Container contentPane = getContentPane();
         JPanel chessBoard = new JPanel();
         GridLayout gridLayout = new GridLayout(8, 8);
@@ -91,14 +130,17 @@ public class Board extends JFrame {
             if(i % 8 == 0) row ++; // increment row number
             labels[i].set(i, row);
             chessBoard.add(labels[i]);
+            System.out.println(labels[i]);
         } // i
-        
         setSize(600, 700);
         setLocationRelativeTo(null);
-        contentPane.add(chessBoard);
+        chessBoard.revalidate();
+        this.getContentPane().revalidate();
+        
+        this.add(chessBoard);
     	turn.setText("TURN: "+turnS);
-        contentPane.add(turn, BorderLayout.NORTH);
-        contentPane.add(movefield, BorderLayout.SOUTH);
+        this.add(turn, BorderLayout.NORTH);
+        this.add(movefield, BorderLayout.SOUTH);
         setVisible(true);
      } // display()
 
