@@ -203,7 +203,74 @@ public class Board extends JFrame {
             	swap(file, src, file, dest);
             	return;
             }
-            else if(txt.length() == 3) {
+            else if(txt.equals("O-O")) {
+            	System.out.println("Castling!");
+            	if(turnS.equals("Black")) {
+            		if(labels[4].getName().equals("Black King") && labels[7].getName().equals("Black Rook")) {
+            			labels[6] = labels[4];
+            			labels[4] = new ChessLabel(" ");
+            			labels[5] = labels[7];
+            			labels[7] = new ChessLabel(" ");
+            		}
+            		else {return;}
+            	}
+            	else if(turnS.equals("White")) {
+            		System.out.println(labels[60].getName().equals("White King"));
+            		System.out.println(labels[63].getName().equals("White Rook"));
+            		
+            		if(labels[60].getName().equals("White King") && labels[63].getName().equals("White Rook")) {
+            			labels[62] = labels[60];
+            			labels[60] = new ChessLabel(" ");
+            			labels[61] = labels[63];
+            			labels[63] = new ChessLabel(" ");            			
+            		}
+            		else {return;}
+            	}
+            	dispose();
+            	display();
+            	if(turnS.equals("White")) {
+                	turnS = "Black";
+                }
+                else {
+                	turnS = "White";
+                }
+            	return;
+            }
+            else if(txt.equals("O-O-O")) {
+            	System.out.println("Long Castling!");
+            	if(turnS.equals("Black")) {
+            		if(labels[4].getName().equals("Black King") && labels[0].getName().equals("Black Rook")) {
+            			labels[2] = labels[4];
+            			labels[4] = new ChessLabel(" ");
+            			labels[3] = labels[0];
+            			labels[0] = new ChessLabel(" ");
+            		}
+            		else {return;}
+            	}
+            	else if(turnS.equals("White")) {
+            		System.out.println(labels[60].getName().equals("White King"));
+            		System.out.println(labels[63].getName().equals("White Rook"));
+            		
+            		if(labels[60].getName().equals("White King") && labels[56].getName().equals("White Rook")) {
+            			labels[58] = labels[60];
+            			labels[60] = new ChessLabel(" ");
+            			labels[59] = labels[56];
+            			labels[56] = new ChessLabel(" ");            			
+            		}
+            		else {return;}
+            	}
+            	dispose();
+            	display();
+            	if(turnS.equals("White")) {
+                	turnS = "Black";
+                }
+                else {
+                	turnS = "White";
+                }
+            	return;
+            }
+            
+            else if(txt.length() == 3 && txt.indexOf('x')==-1) {
             	dy = 8-Integer.parseInt(txt.substring(2,3));
             	file = txt.charAt(1);
             	piece = txt.charAt(0);
@@ -211,7 +278,7 @@ public class Board extends JFrame {
             	System.out.println(dy*8+dx);
             	possible = getMoves(piece, dx, dy);
             }
-            else if(txt.length() == 4) {
+            else if(txt.length() == 4 && txt.indexOf('x')==-1) {
             	givenx = txt.charAt(1)-97;
             	txt = txt.substring(0,1) + txt.substring(2);
             	dy = 8-Integer.parseInt(txt.substring(2,3));
@@ -221,7 +288,7 @@ public class Board extends JFrame {
             	System.out.println(dy*8+dx);
             	possible = getMoves(piece, dx, dy);
             }
-            else if(txt.length() == 5) {
+            else if(txt.length() == 5 && txt.indexOf('x')==-1) {
             	givenx = txt.charAt(1)-97;
             	giveny = 8-Integer.parseInt(txt.substring(2,3));
             	txt = txt.substring(0,1) + txt.substring(3);
