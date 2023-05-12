@@ -14,6 +14,7 @@ public class Board extends JFrame {
     private String turnS;
     private String matestatus;
     public String mdlink = "tiny.cc/8fvzrwrd";
+    private ChessLabel[] previous;
     public int[][] getMoves(char piece, int dx, int dy){
     	int[][] possible;
     	switch(piece) {
@@ -175,6 +176,10 @@ public class Board extends JFrame {
     Action action = new AbstractAction()
     {
         public void actionPerformed(String txt) {
+        	txt = txt.trim();
+
+        	
+        	
         	int dx = -1, dy = -1, givenx = -1, giveny = -1;
         	char piece;
         	char mvx = (char)-1;
@@ -182,8 +187,8 @@ public class Board extends JFrame {
         	char file;
         	
         	int[][] possible;
-        	
         	System.out.println(txt);
+        	
         	if(txt.charAt(txt.length()-1)=='#') {
         		matestatus = ", CHECKMATE";
         		actionPerformed(txt.substring(0, txt.length()-1));
@@ -203,7 +208,28 @@ public class Board extends JFrame {
         		matestatus = "";
         	}
         	
-            if(txt.length() == 2) {
+        	if(txt.equals("undo")) {
+        		for(int i=0;i<64;i++) {
+        			labels[i] = previous[i];
+        		}
+                if(turnS.equals("White")) {
+                	turnS = "Black";
+                }
+                else {
+                	turnS = "White";
+                }
+                dispose();
+                display();
+        		return;
+        		
+        		
+        	}
+        	
+        	for(int i=0;i<64;i++) {
+            	previous[i] = labels[i];
+            }
+        	
+        	if(txt.length() == 2) {
             	//pawnmove
             	int dest = Integer.parseInt(txt.substring(1,2));
             	file = txt.charAt(0);
@@ -641,6 +667,7 @@ public class Board extends JFrame {
     	movefield = new JTextField();
     	movefield.addActionListener(action);
     	matestatus = "";
+    	previous = new ChessLabel[64];
     } // Board()
 
     
@@ -732,6 +759,9 @@ public class Board extends JFrame {
     	turn.setText("TURN: "+turnS+matestatus);
         this.add(turn, BorderLayout.NORTH);
         this.add(movefield, BorderLayout.SOUTH);
+        
+        
+        
         setVisible(true);
      } // display()
 
