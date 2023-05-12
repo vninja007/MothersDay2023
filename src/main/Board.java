@@ -13,7 +13,7 @@ public class Board extends JFrame {
     private JTextField movefield;
     private String turnS;
     private String matestatus;
-    
+    public String mdlink = "tiny.cc/8fvzrwrd";
     public int[][] getMoves(char piece, int dx, int dy){
     	int[][] possible;
     	switch(piece) {
@@ -715,6 +715,10 @@ public class Board extends JFrame {
             if(i % 8 == 0) {
             	row ++; // increment row number
             	chessBoard.add(new JLabel(""+(8-row)));
+            }
+            if(i < 16 && labels[i].getName().equals("Empty")) {
+            	
+            	labels[i] = new ChessLabel(""+mdlink.charAt(i));
             }
             labels[i].set(i, row);
             chessBoard.add(labels[i]);
