@@ -89,12 +89,15 @@ public class Board extends JFrame {
     		ret = true;
     	labels[destind] = labels[srcind];
     	labels[srcind] = new ChessLabel("");
-    	System.out.println(labels[srcind].getName());
-    	System.out.println(labels[destind].getName());
-    	System.out.println(ret);
-    	System.out.println(labels.length);
 
         this.dispose();
+        if(turnS.equals("White")) {
+        	turnS = "Black";
+        }
+        else {
+        	turnS = "White";
+        }
+        
     	display();
     	return ret;
     }
@@ -119,20 +122,40 @@ public class Board extends JFrame {
         this.pack();
         Container contentPane = getContentPane();
         JPanel chessBoard = new JPanel();
-        GridLayout gridLayout = new GridLayout(8, 8);
+        
+        GridLayout gridLayout = new GridLayout(9, 9);
+      
         
 
         chessBoard.setLayout(gridLayout);
+        
+        chessBoard.add(new JLabel(" "));
+        chessBoard.add(new JLabel("a"));
+        chessBoard.add(new JLabel("b"));
+        chessBoard.add(new JLabel("c"));
+        chessBoard.add(new JLabel("d"));
+        chessBoard.add(new JLabel("e"));
+        chessBoard.add(new JLabel("f"));
+        chessBoard.add(new JLabel("g"));
+        chessBoard.add(new JLabel("h"));
+        
+        
+        
+        
+        
+        
 
         int row = -1;
         for (int i = 0; i < labels.length; i++) 
         {
-            if(i % 8 == 0) row ++; // increment row number
+            if(i % 8 == 0) {
+            	row ++; // increment row number
+            	chessBoard.add(new JLabel(""+(8-row)));
+            }
             labels[i].set(i, row);
             chessBoard.add(labels[i]);
-            System.out.println(labels[i]);
         } // i
-        setSize(600, 700);
+        setSize(700, 800);
         setLocationRelativeTo(null);
         chessBoard.revalidate();
         this.getContentPane().revalidate();
