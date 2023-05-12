@@ -237,7 +237,62 @@ public class Board extends JFrame {
             	}
             	System.out.println(dy*8+dx);
             }
-          
+            else if(txt.length() == 5 && txt.indexOf('x')!=-1) {
+            	givenx = txt.charAt(1)-97;
+            	txt = txt.substring(0,1)+ txt.substring(3);
+            	dy = 8-Integer.parseInt(txt.substring(2,3));
+            	file = txt.charAt(1);
+            	dx = file-97;
+            	if((int)txt.charAt(0) >= 97) {
+            		piece = 'P';
+            		if(turnS.equals("White")) {
+                    	possible = new int[][] {
+                    		{dx-1,dy+1},
+                    		{dx+1,dy+1}
+                    	};
+            		}
+            		else {
+            			possible = new int[][] {
+                    		{dx-1,dy-1},
+                    		{dx+1,dy-1}
+                    	};
+            		}
+            	}
+            	else {
+            		piece = txt.charAt(0);
+                	possible = getMoves(piece, dx, dy);
+            	}
+            	System.out.println(dy*8+dx);
+            }
+            else if(txt.length() == 6 && txt.indexOf('x')!=-1) {
+            	givenx = txt.charAt(1)-97;
+            	giveny = 8-Integer.parseInt(txt.substring(2,3));
+            	txt = txt.substring(0,1)+ txt.substring(4);
+            	dy = 8-Integer.parseInt(txt.substring(2,3));
+            	file = txt.charAt(1);
+            	dx = file-97;
+            	if((int)txt.charAt(0) >= 97) {
+            		piece = 'P';
+            		if(turnS.equals("White")) {
+                    	possible = new int[][] {
+                    		{dx-1,dy+1},
+                    		{dx+1,dy+1}
+                    	};
+            		}
+            		else {
+            			possible = new int[][] {
+                    		{dx-1,dy-1},
+                    		{dx+1,dy-1}
+                    	};
+            		}
+            	}
+            	else {
+            		piece = txt.charAt(0);
+                	possible = getMoves(piece, dx, dy);
+            	}
+            	System.out.println(dy*8+dx);
+            }
+            
             else {
             	possible = new int[0][0];
             	piece = ' ';
@@ -257,10 +312,18 @@ public class Board extends JFrame {
         		System.out.println(labels[8*y+x].getShortName());
         		System.out.println(piece);
         		if(giveny!= -1) {
-        			
+        			if(labels[8*y+x].getShortName()==piece && labels[8*y+x].getColor().equals(turnS) && x == givenx && y == giveny) {
+	        			mvx = (char)(x+97);
+	        			mvy = 8-y;
+	        			break;
+	        		}
         		}
         		else if(givenx!= -1) {
-        			
+        			if(labels[8*y+x].getShortName()==piece && labels[8*y+x].getColor().equals(turnS) && x == givenx) {
+	        			mvx = (char)(x+97);
+	        			mvy = 8-y;
+	        			break;
+	        		}
         		}
         		else {
 	        		if(labels[8*y+x].getShortName()==piece && labels[8*y+x].getColor().equals(turnS)) {
