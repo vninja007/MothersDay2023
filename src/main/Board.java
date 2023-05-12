@@ -12,6 +12,7 @@ public class Board extends JFrame {
     private JLabel turn;
     private JTextField movefield;
     private String turnS;
+    private String matestatus;
     
     public int[][] getMoves(char piece, int dx, int dy){
     	int[][] possible;
@@ -181,7 +182,27 @@ public class Board extends JFrame {
         	char file;
         	
         	int[][] possible;
+        	
         	System.out.println(txt);
+        	if(txt.charAt(txt.length()-1)=='#') {
+        		matestatus = ", CHECKMATE";
+        		actionPerformed(txt.substring(0, txt.length()-1));
+        		matestatus = ", CHECKMATE";
+        		display();
+        		return;
+        	}
+        	else if(txt.charAt(txt.length()-1)=='+') {
+        		matestatus = ", Check";
+        		actionPerformed(txt.substring(0, txt.length()-1));
+
+        		matestatus = ", Check";
+        		display();
+        		return;
+        	}
+        	else {
+        		matestatus = "";
+        	}
+        	
             if(txt.length() == 2) {
             	//pawnmove
             	int dest = Integer.parseInt(txt.substring(1,2));
@@ -202,6 +223,140 @@ public class Board extends JFrame {
             			&& !labels[(8-src) * 8 + (file-97)].getName().equals("White Pawn")) {return;}
             	swap(file, src, file, dest);
             	return;
+            }
+            else if(txt.indexOf("=") != -1 && txt.indexOf("x") == -1) {
+            	//promotion
+            	file = txt.charAt(0);
+            	//piece = txt.charAt(0);
+            	dx = file-97;
+            	
+            	if(turnS.equals("White")) {
+            		if(labels[8+dx].getName().equals("White Pawn") 
+            				&& labels[dx].getName().equals("Empty")) {
+            			switch(txt.charAt(txt.length()-1)) {
+            			case 'Q':
+            				labels[dx] = new ChessLabel("\u2655");
+            				break;
+            			case 'N':
+            				labels[dx] = new ChessLabel("\u2658");
+            				break;
+            			case 'R':
+            				labels[dx] = new ChessLabel("\u2656");
+            				break;
+            			case 'B':
+            				labels[dx] = new ChessLabel("\u2657");
+            				break;
+            			default:
+            				return;
+            			}
+
+                    	labels[8+dx] = new ChessLabel("");
+            		}
+            		else {return;}
+            	}
+            	else if(turnS.equals("Black")) {
+            		if(labels[48+dx].getName().equals("Black Pawn") 
+            				&& labels[56+dx].getName().equals("Empty")) {
+            			switch(txt.charAt(txt.length()-1)) {
+            			case 'Q':
+            				labels[56+dx] = new ChessLabel("\u265B");
+            				break;
+            			case 'N':
+            				labels[56+dx] = new ChessLabel("\u265E");
+            				break;
+            			case 'R':
+            				labels[56+dx] = new ChessLabel("\u265C");
+            				break;
+            			case 'B':
+            				labels[56+dx] = new ChessLabel("\u265D");
+            				break;
+            			default:
+            				return;
+            			}
+
+                    	labels[48+dx] = new ChessLabel("");
+            		}
+            		else {return;}
+            	}
+            	else {return;}
+            	dispose();
+            	display();
+            	if(turnS.equals("White")) {
+                	turnS = "Black";
+                }
+                else {
+                	turnS = "White";
+                }
+            	return;
+            	
+            }
+            else if(txt.indexOf("=") != -1 && txt.indexOf("x") != -1) {
+            	//promotion
+            	char dfile = txt.charAt(2);
+            	char sfile = txt.charAt(0);
+            	
+            	//piece = txt.charAt(0);
+            	dx = dfile-97;
+            	int sx = sfile-97;
+            	if(turnS.equals("White")) {
+            		if(labels[8+sx].getName().equals("White Pawn") 
+            				&& !labels[dx].getName().equals("Empty")) {
+            			switch(txt.charAt(txt.length()-1)) {
+            			case 'Q':
+            				labels[dx] = new ChessLabel("\u2655");
+            				break;
+            			case 'N':
+            				labels[dx] = new ChessLabel("\u2658");
+            				break;
+            			case 'R':
+            				labels[dx] = new ChessLabel("\u2656");
+            				break;
+            			case 'B':
+            				labels[dx] = new ChessLabel("\u2657");
+            				break;
+            			default:
+            				return;
+            			}
+            			labels[8+sx] = new ChessLabel(" ");
+            		}
+            		else {return;}
+            	}
+            	else if(turnS.equals("Black")) {
+            		if(labels[48+sx].getName().equals("Black Pawn") 
+            				&& !labels[56+dx].getName().equals("Empty")) {
+            			switch(txt.charAt(txt.length()-1)) {
+            			case 'Q':
+            				labels[dx] = new ChessLabel("\u265B");
+            				break;
+            			case 'N':
+            				labels[dx] = new ChessLabel("\u265E");
+            				break;
+            			case 'R':
+            				labels[dx] = new ChessLabel("\u265C");
+            				break;
+            			case 'B':
+            				labels[dx] = new ChessLabel("\u265D");
+            				break;
+            			default:
+            				return;
+            			}
+            			labels[48+sx] = new ChessLabel(" ");
+            		}
+            		else {
+            			return;
+            		}
+            	}
+            	else {return;}
+            	dispose();
+            	display();
+            	if(turnS.equals("White")) {
+                	turnS = "Black";
+                }
+                else {
+                	turnS = "White";
+                }
+            	return;
+            	
             }
             else if(txt.equals("O-O")) {
             	System.out.println("Castling!");
@@ -481,10 +636,11 @@ public class Board extends JFrame {
     	turnS = "White";
     	turn = new JLabel();
     	turn.setText("TURN: "+turnS);
-    	turn.setFont(new Font("Serif", Font.PLAIN, 14));
+    	turn.setFont(new Font("Serif", Font.PLAIN, 30));
     	turn.setSize(100, 100);
     	movefield = new JTextField();
     	movefield.addActionListener(action);
+    	matestatus = "";
     } // Board()
 
     
@@ -569,7 +725,7 @@ public class Board extends JFrame {
         this.getContentPane().revalidate();
         
         this.add(chessBoard);
-    	turn.setText("TURN: "+turnS);
+    	turn.setText("TURN: "+turnS+matestatus);
         this.add(turn, BorderLayout.NORTH);
         this.add(movefield, BorderLayout.SOUTH);
         setVisible(true);
