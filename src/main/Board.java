@@ -211,6 +211,30 @@ public class Board extends JFrame {
             	System.out.println(dy*8+dx);
             	possible = getMoves(piece, dx, dy);
             }
+            else if(txt.length() == 4) {
+            	givenx = txt.charAt(1)-97;
+            	txt = txt.substring(0,1) + txt.substring(2);
+            	dy = 8-Integer.parseInt(txt.substring(2,3));
+            	file = txt.charAt(1);
+            	piece = txt.charAt(0);
+            	dx = file-97;
+            	System.out.println(dy*8+dx);
+            	possible = getMoves(piece, dx, dy);
+            }
+            else if(txt.length() == 5) {
+            	givenx = txt.charAt(1)-97;
+            	giveny = 8-Integer.parseInt(txt.substring(2,3));
+            	txt = txt.substring(0,1) + txt.substring(3);
+            	dy = 8-Integer.parseInt(txt.substring(2,3));
+            	file = txt.charAt(1);
+            	piece = txt.charAt(0);
+            	dx = file-97;
+            	System.out.println(dy*8+dx);
+            	possible = getMoves(piece, dx, dy);
+            }
+            
+            
+            
             else if(txt.length() == 4 && txt.indexOf('x')!=-1) {
             	txt = txt.substring(0,1)+ txt.substring(2);
             	dy = 8-Integer.parseInt(txt.substring(2,3));
@@ -267,7 +291,7 @@ public class Board extends JFrame {
             else if(txt.length() == 6 && txt.indexOf('x')!=-1) {
             	givenx = txt.charAt(1)-97;
             	giveny = 8-Integer.parseInt(txt.substring(2,3));
-            	txt = txt.substring(0,1)+ txt.substring(4);
+            	txt = txt.substring(0,1) + txt.substring(4);
             	dy = 8-Integer.parseInt(txt.substring(2,3));
             	file = txt.charAt(1);
             	dx = file-97;
